@@ -1,0 +1,284 @@
+[gd_scene load_steps=19 format=3 uid="uid://b84n8rr766xy6"]
+
+[ext_resource type="Shader" path="res://main.gdshader" id="1_hwu3c"]
+[ext_resource type="Script" path="res://main.gd" id="1_skfkj"]
+[ext_resource type="PackedScene" uid="uid://bu1rovvwofidi" path="res://player.tscn" id="1_tlhgt"]
+[ext_resource type="PackedScene" uid="uid://blwde3uxfkrfm" path="res://enemy.tscn" id="2_of4nq"]
+[ext_resource type="Texture2D" uid="uid://0t3ioj85200j" path="res://enemy_bullet.png" id="3_ckn67"]
+[ext_resource type="Script" path="res://ball.gd" id="3_i61a5"]
+[ext_resource type="Texture2D" uid="uid://wh7vnwdvtipx" path="res://icon.svg" id="5_epvm8"]
+[ext_resource type="PackedScene" uid="uid://b1b08gvc8glwb" path="res://portal.tscn" id="8_opsna"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6fcjt"]
+shader = ExtResource("1_hwu3c")
+shader_parameter/mouse = Vector2(0.335, -0.695)
+shader_parameter/time = 8.31
+shader_parameter/speed2 = 0.2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vc78g"]
+size = Vector2(35, 1145.99)
+
+[sub_resource type="Animation" id="Animation_p205f"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_sktde"]
+resource_name = "new_animation"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.76976]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5y1bl"]
+_data = {
+"RESET": SubResource("Animation_p205f"),
+"new_animation": SubResource("Animation_sktde")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tgrnv"]
+
+[sub_resource type="Animation" id="Animation_jwxqw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_gocpd"]
+resource_name = "default"
+loop_mode = 1
+step = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.26, 0.57, 0.94),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 1, 1), Color(1, 0.00334196, 0.357451, 1), Color(0, 0.74902, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u1ytr"]
+_data = {
+"RESET": SubResource("Animation_jwxqw"),
+"default": SubResource("Animation_gocpd")
+}
+
+[sub_resource type="Gradient" id="Gradient_aqpeu"]
+offsets = PackedFloat32Array(0, 0.546667, 1)
+colors = PackedColorArray(0.607843, 1, 0, 1, 0, 0.329412, 0.745098, 1, 1, 0, 1, 1)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_skfkj")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_6fcjt")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 28.775
+anchor_bottom = 16.175
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0687372, 0.00149861, 0.194618, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect2" type="ColorRect" parent="Control"]
+modulate = Color(1, 1, 1, 0.811765)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 28.775
+anchor_bottom = 16.175
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0687372, 0.00149861, 0.194618, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Player" parent="Control" groups=["player"] instance=ExtResource("1_tlhgt")]
+position = Vector2(17, 415)
+scale = Vector2(5, 5)
+
+[node name="Enemy" parent="Control" instance=ExtResource("2_of4nq")]
+position = Vector2(1116, 432)
+scale = Vector2(5, 5)
+
+[node name="Collisions" type="Node2D" parent="."]
+
+[node name="left_area" type="StaticBody2D" parent="Collisions" groups=["sides"]]
+position = Vector2(-34, 0)
+
+[node name="left" type="CollisionShape2D" parent="Collisions/left_area"]
+position = Vector2(17, 323)
+shape = SubResource("RectangleShape2D_vc78g")
+
+[node name="right_area" type="StaticBody2D" parent="Collisions" groups=["sides"]]
+position = Vector2(36, 0)
+
+[node name="right" type="CollisionShape2D" parent="Collisions/right_area"]
+position = Vector2(1134, 323)
+shape = SubResource("RectangleShape2D_vc78g")
+
+[node name="bottom_area" type="StaticBody2D" parent="Collisions" groups=["margin"]]
+
+[node name="bottom" type="CollisionShape2D" parent="Collisions/bottom_area"]
+position = Vector2(574.995, 664.847)
+rotation = 1.57018
+shape = SubResource("RectangleShape2D_vc78g")
+
+[node name="top_area" type="StaticBody2D" parent="Collisions" groups=["margin"]]
+
+[node name="top" type="CollisionShape2D" parent="Collisions/top_area"]
+position = Vector2(574.995, -20)
+rotation = 1.57018
+shape = SubResource("RectangleShape2D_vc78g")
+
+[node name="Ball" type="Area2D" parent="." groups=["ball"]]
+position = Vector2(567, 347)
+rotation = -0.464258
+script = ExtResource("3_i61a5")
+
+[node name="PointLight2D" type="PointLight2D" parent="Ball"]
+scale = Vector2(0.605, 0.605)
+energy = 15.13
+range_z_max = 1200
+texture = ExtResource("5_epvm8")
+texture_scale = 0.15
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Ball/PointLight2D"]
+libraries = {
+"": SubResource("AnimationLibrary_5y1bl")
+}
+autoplay = "new_animation"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+shape = SubResource("CircleShape2D_tgrnv")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ball"]
+scale = Vector2(1.845, 1.845)
+texture = ExtResource("3_ckn67")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Ball/Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_u1ytr")
+}
+autoplay = "default"
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Ball"]
+emitting = false
+amount = 100
+lifetime = 0.3
+one_shot = true
+speed_scale = 0.5
+explosiveness = 0.72
+randomness = 1.0
+lifetime_randomness = 1.0
+fract_delta = false
+emission_shape = 2
+emission_sphere_radius = 4.0
+initial_velocity_max = 100.0
+angular_velocity_max = 203.64
+angle_min = -654.6
+angle_max = 720.0
+scale_amount_min = 0.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_aqpeu")
+
+[node name="Portal" parent="." instance=ExtResource("8_opsna")]
+visible = false
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[node name="Game_over" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="game_over" type="ColorRect" parent="Game_over"]
+modulate = Color(0, 0, 0, 1)
+material = SubResource("ShaderMaterial_6fcjt")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 5.025
+anchor_top = 2.7
+anchor_right = 33.8
+anchor_bottom = 18.875
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.670662, 0.626007)
+color = Color(1, 0.0627451, 0.054902, 1)
+
+[node name="game_over2" type="Label" parent="Game_over"]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 164.0
+offset_right = 11194.0
+offset_bottom = 2888.0
+scale = Vector2(0.0432968, 0.0432968)
+theme_override_font_sizes/font_size = 2000
+text = "Game Over"
+
+[node name="play_again" type="Button" parent="Game_over"]
+process_mode = 2
+layout_mode = 0
+offset_left = 461.0
+offset_top = 308.0
+offset_right = 2919.0
+offset_bottom = 998.0
+scale = Vector2(0.095, 0.095)
+theme_override_font_sizes/font_size = 500
+text = "Play again"
+
+[connection signal="body_entered" from="Ball" to="." method="_on_ball_body_entered_sides"]
+[connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered"]
+[connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered_sides"]
+[connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered_enemy"]
+[connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered_player"]
+[connection signal="area_entered" from="Portal/PortalA" to="." method="_on_portal_a_area_entered"]
+[connection signal="area_exited" from="Portal/PortalA" to="." method="_on_portal_a_area_exited"]
+[connection signal="area_entered" from="Portal/PortalB" to="." method="_on_portal_b_area_entered"]
+[connection signal="area_exited" from="Portal/PortalB" to="." method="_on_portal_b_area_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="Game_over/play_again" to="." method="_on_play_again_pressed"]
+
+[editable path="Portal"]
