@@ -1,6 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://bu1rovvwofidi"]
+[gd_scene load_steps=5 format=3 uid="uid://bu1rovvwofidi"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_74bmi"]
+[ext_resource type="Shader" path="res://player.gdshader" id="2_uykgk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o0evn"]
+shader = ExtResource("2_uykgk")
+shader_parameter/EnableShader = true
+shader_parameter/LinearGradient = false
+shader_parameter/ClampDist = false
+shader_parameter/DistOffset = -0.1
+shader_parameter/DistAdd = 0.07
+shader_parameter/GridScale = 1
+shader_parameter/ModulateColor = Color(0.420413, 0.00111211, 0.59514, 1)
+shader_parameter/GradientOpacity = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1307d"]
 size = Vector2(4, 40)
@@ -9,6 +21,7 @@ size = Vector2(4, 40)
 script = ExtResource("1_74bmi")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_o0evn")
 offset_right = 4.0
 offset_bottom = 40.0
 scale = Vector2(1, 0.5)

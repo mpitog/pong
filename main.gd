@@ -7,8 +7,13 @@ var is_portal_visible = false
 @onready var portal_b: Area2D = $Portal/PortalB
 @onready var game_over_ctr_node: Control = $Game_over
 @onready var game_over_2: Label = $Game_over/game_over2
-
 @onready var color_rect: ColorRect = $Control/ColorRect
+@onready var shader = load("res://player.gdshader")
+# Parameters for lerp
+@export var lerp_speed: float = 1.0 # Speed of the interpolation
+@export var shader_material: ShaderMaterial = null
+var target_opacity: float = 1.0
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -20,9 +25,14 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	var shader_material: ShaderMaterial = color_rect.material
-	var current_time = shader_material.get_shader_parameter("time")
-	current_time += delta
-	shader_material.set_shader_parameter("time", current_time)
+
+	var DistOffset = shader_material.get_shader_parameter("DistOffset")
+	shader_material.set_shader_parameter("DistOffset", DistOffset)
+
+	if shader_material:
+		shader_material.set("shader_parameter/DistOffset",0.0)
+		var a = shader_material.get("shader_parameter/DistOffset")
+		lerp(a, 1.0, delta*2)
 
 #random position of the portal
 func portal_position() -> void:

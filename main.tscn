@@ -281,10 +281,10 @@ theme_override_font_sizes/font_size = 500
 text = "Start"
 
 [connection signal="body_entered" from="Ball" to="." method="_on_ball_body_entered_sides"]
-[connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered_enemy"]
-[connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered_sides"]
-[connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered"]
 [connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered_player"]
+[connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered"]
+[connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered_sides"]
+[connection signal="body_entered" from="Ball" to="Ball" method="_on_body_entered_enemy"]
 [connection signal="area_entered" from="Portal/PortalA" to="." method="_on_portal_a_area_entered"]
 [connection signal="area_exited" from="Portal/PortalA" to="." method="_on_portal_a_area_exited"]
 [connection signal="area_entered" from="Portal/PortalB" to="." method="_on_portal_b_area_entered"]
