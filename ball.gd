@@ -7,6 +7,10 @@ var start_dir : Vector2
 var direction : Vector2
 @onready var ball_effects: CPUParticles2D = $CPUParticles2D
 @onready var game_over: Control = $"../Game_over"
+@onready var game_over_2: Label = $"../Game_over/game_over2"
+@onready var start_game: Button = $"../Game_over/start_game"
+@onready var play_again: Button = $"../Game_over/play_again"
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	get_tree().paused = false
@@ -65,4 +69,6 @@ func _on_body_entered_sides(body: Node2D) -> void:
 	if body.is_in_group("sides"):
 		get_tree().paused = true
 		game_over.visible = true
-		
+		game_over_2.text="Game Over"
+		start_game.visible = false
+		play_again.visible = true
