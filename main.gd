@@ -3,14 +3,19 @@ extends Node2D
 @onready var ball: Ball = $Ball
 @onready var portal: Node2D = $Portal
 var is_portal_visible = false
-
 @onready var portal_a: Area2D = $Portal/PortalA
 @onready var portal_b: Area2D = $Portal/PortalB
+@onready var game_over_ctr_node: Control = $Game_over
+@onready var game_over_2: Label = $Game_over/game_over2
 
 @onready var color_rect: ColorRect = $Control/ColorRect
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	get_tree().paused=true
+	game_over_2.text = "New Game"
+	game_over_ctr_node.visible = true
+	get_node('Game_over/play_again').visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -66,3 +71,9 @@ func _on_portal_b_area_exited(area: Area2D) -> void:
 #restart game
 func _on_play_again_pressed() -> void:
 	get_tree().reload_current_scene()
+
+
+func _on_start_game_pressed() -> void:
+	get_tree().paused = false
+	game_over_ctr_node.visible = false
+	
